@@ -1,3 +1,4 @@
+--fail 39
 create table tblEmployee (
 Id int primary key,
 Name nvarchar(30),
@@ -25,7 +26,8 @@ insert into tblEmployee values (6, 'Ben', 4800,'Male',3);
 
 select Id, Name, Salary, Gender, DeptName from tblEmployee
 join tblDepartment on tblEmployee.DepartmentId = tblDepartment.DeptId
-
+  
+--Näitab töötajate osakonna id asemel, näitab nende osakondi
 Create view vWEmployeeByDepartment
 as
 select Id, Name, Salary, Gender, DeptName from tblEmployee
@@ -33,6 +35,7 @@ join tblDepartment on tblEmployee.DepartmentId = tblDepartment.DeptId
 
 select * from vWEmployeeByDepartment
 
+--itab töötajate osakonna id asemel, näitab nende osakondi. Näitab ka ainult töötajad IT osakondist
 Create view vWITDepartment_Employees
 as
 select Id, Name, Salary, Gender, DeptName from tblEmployee
@@ -41,6 +44,7 @@ where tblDepartment.DeptName='IT'
 
 select * from vWITDepartment_Employees
 
+
 Create view vWEmployeesNonConfidentialData
 as
 select Id, Name, Gender, DeptName from tblEmployee
@@ -48,14 +52,17 @@ join tblDepartment on tblEmployee.DepartmentId = tblDepartment.DeptId
 
 select * from vWEmployeesNonConfidentialData
 
+--Näitab kui palju inimesed iga osakondis
 Create view vWEmployeesCountByDepartment
 as
 select DeptName, COUNT(Id) as TotalEmployees from tblEmployee
 join tblDepartment on tblEmployee.DepartmentId = tblDepartment.DeptId
 group by DeptName
 
+--fail 40
 select * from vWEmployeesCountByDepartment
 
+--Näitab töötajad tblemployee Tabelist
 Create view vWEmployeesDataExceptSalary
 as
 select Id, Name, Gender, DepartmentId
@@ -82,6 +89,8 @@ set DeptName = 'IT' where Name = 'John';
 
 select * from vWEmployeesDetailsByDepartment
 
+--fail 41
+  
 create table tblProduct (
 ProductId int Primary key,
 Name nvarchar(20),
@@ -113,6 +122,7 @@ insert into tblProductSales values (1,14);
 
 select * from tblProductSales
 
+--annab meile veerud TotalSales ja TotalTransactions toote järgi
 create view vWTotalSalesByProduct
 with SchemaBinding
 as
